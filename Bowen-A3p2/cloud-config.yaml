@@ -1,0 +1,20 @@
+users:
+  - name: web
+    primary_group: web
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - my key is hidden
+
+packages:
+  - nginx
+  - ufw
+  - rsync
+  - ripgrep
+
+runcmd:
+  - sed -i 's/^#\(Storage=auto\)/\1/' /etc/systemd/journald.conf
+  - sed -i -e '/^PermitRootLogin/s/^.*$/PermitRootLogin no/' /etc/ssh/sshd_config
+  - systemctl restart ssh
+  - systemctl restart systemd-journald
